@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/Yakitrak/notesmd-cli/pkg/actions"
-	"github.com/Yakitrak/notesmd-cli/pkg/obsidian"
+	"github.com/dzackgarza/notesmd-cli/pkg/actions"
+	"github.com/dzackgarza/notesmd-cli/pkg/obsidian"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
 )

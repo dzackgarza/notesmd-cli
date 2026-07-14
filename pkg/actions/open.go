@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Yakitrak/notesmd-cli/pkg/obsidian"
+	"github.com/dzackgarza/notesmd-cli/pkg/obsidian"
 )
 
 type OpenParams struct {

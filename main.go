@@ -1,6 +1,6 @@
 package main
 
-import "github.com/Yakitrak/notesmd-cli/cmd"
+import "github.com/dzackgarza/notesmd-cli/cmd"
 
 func main() {
 	cmd.Execute()

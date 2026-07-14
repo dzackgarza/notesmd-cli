@@ -9,7 +9,7 @@ import (
 	"sort"
 	"text/tabwriter"
 
-	"github.com/Yakitrak/notesmd-cli/pkg/obsidian"
+	"github.com/dzackgarza/notesmd-cli/pkg/obsidian"
 	"github.com/spf13/cobra"
 )
 

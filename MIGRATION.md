@@ -13,7 +13,7 @@ With the release of the Official Obsidian CLI, this project has been renamed fro
 - **Binary name**: `obsidian-cli` → `notesmd-cli`
 - **Package names**: Updated in Homebrew, Scoop, and AUR
 - **Config directory**: `~/.config/obsidian-cli` → `~/.config/notesmd-cli`
-- **Go module path**: `github.com/Yakitrak/obsidian-cli` → `github.com/Yakitrak/notesmd-cli`
+- **Go module path**: `github.com/Yakitrak/obsidian-cli` → `github.com/dzackgarza/notesmd-cli`
 
 ## Migration Steps
 
@@ -194,7 +194,7 @@ If your settings aren't being recognized:
 
 ### Need Help?
 
-Open an issue on [GitHub](https://github.com/Yakitrak/notesmd-cli/issues) if you encounter any problems during migration.
+Open an issue on [GitHub](https://github.com/dzackgarza/notesmd-cli/issues) if you encounter any problems during migration.
 
 ## For Developers
 
@@ -204,13 +204,13 @@ If you've been using `obsidian-cli` in your Go projects:
 
 ```bash
 # Update go.mod
-go get github.com/Yakitrak/notesmd-cli@latest
+go get github.com/dzackgarza/notesmd-cli@latest
 
 # Update imports in your code
 # Old: import "github.com/Yakitrak/obsidian-cli/pkg/..."
-# New: import "github.com/Yakitrak/notesmd-cli/pkg/..."
+# New: import "github.com/dzackgarza/notesmd-cli/pkg/..."
 ```
 
 ---
 
-**Welcome to NotesMD CLI!** 🎉 If you have any questions or feedback about the migration, please [open an issue](https://github.com/Yakitrak/notesmd-cli/issues/new/choose).
+**Welcome to NotesMD CLI!** 🎉 If you have any questions or feedback about the migration, please [open an issue](https://github.com/dzackgarza/notesmd-cli/issues/new/choose).

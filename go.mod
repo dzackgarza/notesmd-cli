@@ -1,4 +1,4 @@
-module github.com/Yakitrak/notesmd-cli
+module github.com/dzackgarza/notesmd-cli
 
 go 1.25.8
 

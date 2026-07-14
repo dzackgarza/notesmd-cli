@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Yakitrak/notesmd-cli/pkg/config"
+	"github.com/dzackgarza/notesmd-cli/pkg/config"
 )
 
 // AddVault registers a vault path in the Obsidian config file.

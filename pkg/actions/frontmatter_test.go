@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/Yakitrak/notesmd-cli/mocks"
-	"github.com/Yakitrak/notesmd-cli/pkg/actions"
+	"github.com/dzackgarza/notesmd-cli/mocks"
+	"github.com/dzackgarza/notesmd-cli/pkg/actions"
 	"github.com/stretchr/testify/assert"
 )
 
