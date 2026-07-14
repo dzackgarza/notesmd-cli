@@ -10,12 +10,34 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/karrick/godirwalk"
 )
 
 type Note struct{}
 
 func isHiddenDir(d fs.DirEntry) bool {
 	return d.IsDir() && d.Name() != "." && strings.HasPrefix(d.Name(), ".")
+}
+
+// walkReadOnly traverses the vault for discovery operations. It follows installed
+// directory symlinks while godirwalk prevents logical filesystem loops.
+func walkReadOnly(vaultPath string, visit fs.WalkDirFunc) error {
+	return godirwalk.Walk(vaultPath, &godirwalk.Options{
+		FollowSymbolicLinks: true,
+		Callback: func(path string, de *godirwalk.Dirent) error {
+			info, err := os.Stat(path)
+			if err != nil {
+				return visit(path, nil, err)
+			}
+
+			err = visit(path, fs.FileInfoToDirEntry(info), nil)
+			if err == filepath.SkipDir {
+				return godirwalk.SkipThis
+			}
+			return err
+		},
+	})
 }
 
 type NoteMatch struct {
@@ -66,7 +88,7 @@ func (m *Note) GetContents(vaultPath string, noteName string) (string, error) {
 	note := AddMdSuffix(noteName)
 
 	var notePath string
-	err := filepath.WalkDir(vaultPath, func(path string, d os.DirEntry, err error) error {
+	err := walkReadOnly(vaultPath, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err // Continue to the next path if there's an error
 		}
@@ -183,7 +205,7 @@ func (m *Note) UpdateLinks(vaultPath string, oldNoteName string, newNoteName str
 func (m *Note) GetNotesList(vaultPath string) ([]string, error) {
 	excluded := ExcludedPaths(vaultPath)
 	var notes []string
-	err := filepath.WalkDir(vaultPath, func(path string, d fs.DirEntry, err error) error {
+	err := walkReadOnly(vaultPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -216,7 +238,7 @@ func (m *Note) SearchNotesWithSnippets(vaultPath string, query string) ([]NoteMa
 	var matches []NoteMatch
 	queryLower := strings.ToLower(query)
 
-	err := filepath.WalkDir(vaultPath, func(path string, d fs.DirEntry, err error) error {
+	err := walkReadOnly(vaultPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -358,7 +380,7 @@ func (m *Note) FindBacklinks(vaultPath, noteName string) ([]NoteMatch, error) {
 	var matches []NoteMatch
 	fileModTimes := make(map[string]int64)
 
-	err := filepath.WalkDir(vaultPath, func(path string, d fs.DirEntry, err error) error {
+	err := walkReadOnly(vaultPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
