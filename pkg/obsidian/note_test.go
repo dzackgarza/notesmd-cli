@@ -519,6 +519,37 @@ func writeObsidianAppJSON(t *testing.T, vaultDir string, filters []string) {
 	}
 }
 
+func TestNote_ReadOnlyDiscoveryFollowsDirectorySymlink(t *testing.T) {
+	vaultPath := t.TempDir()
+	externalPath := t.TempDir()
+
+	linkedNotePath := filepath.Join(externalPath, "linked-note.md")
+	assert.NoError(t, os.WriteFile(linkedNotePath, []byte("needle\n[[TargetNote]]\n"), 0644))
+	assert.NoError(t, os.Symlink(externalPath, filepath.Join(vaultPath, "installed")))
+
+	note := obsidian.Note{}
+
+	notes, err := note.GetNotesList(vaultPath)
+	assert.NoError(t, err)
+	assert.Contains(t, notes, "installed/linked-note.md")
+
+	matches, err := note.SearchNotesWithSnippets(vaultPath, "needle")
+	assert.NoError(t, err)
+	if assert.NotEmpty(t, matches) {
+		assert.Equal(t, "installed/linked-note.md", matches[0].FilePath)
+	}
+
+	contents, err := note.GetContents(vaultPath, "installed/linked-note")
+	assert.NoError(t, err)
+	assert.Contains(t, contents, "needle")
+
+	backlinks, err := note.FindBacklinks(vaultPath, "TargetNote")
+	assert.NoError(t, err)
+	if assert.NotEmpty(t, backlinks) {
+		assert.Equal(t, "installed/linked-note.md", backlinks[0].FilePath)
+	}
+}
+
 func TestSearchNotesWithSnippets(t *testing.T) {
 	t.Run("Search notes with content matches", func(t *testing.T) {
 		// Arrange
